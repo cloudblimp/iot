@@ -1,0 +1,84 @@
+1. Arduino program to demonstrate control of servo motor without using potentiometer.
+#include <Servo.h> Servo myservo;
+int pos=0; void setup()
+{myservo.attach(9); }
+void loop() {for(pos=0;pos<180;pos++)
+{myservo.write(pos); delay(5);
+}for(pos=180;pos>0;pos--)
+{myservo.write(pos); delay(5);
+}}
+
+
+
+2. Arduino program to demonstrate control of servo motor using potentiometer.
+#include<Servo.h>
+Servo myservo;
+int potpin=0; 
+void setup() {
+myservo.attach(9);//3 5 6 9 11 }
+void loop() {
+int val=analogRead(potpin);
+int output=map(val,0,1023,0,180); myservo.write(output); delay(100);
+}
+
+
+
+3. To adjust the brightness (Fading) of an LED without using Potentiometer.
+const int analogOutput=9;
+int sensorValue=0;
+int outputValue=0;
+void setup() {
+Serial.begin(9600); }
+void loop() {
+for(int i=0;i<=1023;i++) {
+sensorValue=analogRead(i);
+outputValue=map(sensorValue,0,1023,0,255);
+//map is a function which accepts 5 arguments map(input sensor value ,volt_value range and analog value range;
+analogWrite(analogOutput,outputValue);
+Serial.print("Sensor=");
+Serial.print(sensorValue); Serial.print("\t Output="); Serial.println(outputValue);
+}
+for(int i=1023;i>=0;i--) {
+sensorValue=analogRead(i);
+outputValue=map(sensorValue,0,1023,0,255); analogWrite(analogOutput,outputValue); Serial.print("Sensor="); Serial.print(sensorValue);
+Serial.print("\t Output=");
+Serial.println(outputValue); }
+}
+
+4. To adjust the brightness (Fading) of an LED using Potentiometer.
+int sensorValue=0; //wiper-read voltage from potentiometer int outputValue=0;//value output to the PWM(analog output)
+void setup() {
+Serial.begin(9600); }
+void loop() {
+sensorValue=analogRead(analogInput); outputValue=map(sensorValue,0,1023,0,255); analogWrite(analogOutput,outputValue);
+Serial.print("Sensor="); Serial.print(sensorValue); Serial.print("\t Output="); Serial.println(outputValue);
+}
+
+
+
+5. Arduino program to implement traffic control system.
+int carRed =12;
+int carYellow =11; int carGreen =10; int pedRed =9;
+int pedGreen =8;
+int button=2;
+int crossTime=5000;
+unsigned long changeTime;
+void setup() {
+pinMode(carRed, OUTPUT); pinMode(carYellow, OUTPUT); pinMode(carGreen, OUTPUT); pinMode(pedRed, OUTPUT); pinMode(pedGreen, OUTPUT); pinMode(button, INPUT);
+digitalWrite(carGreen, HIGH);
+digitalWrite(pedRed, HIGH); }
+void loop() {
+int state=digitalRead(button);
+if(state==HIGH &&(millis()-changeTime)>5000) {
+changeLights();
+}
+}
+void changeLights() {
+digitalWrite(carGreen,LOW); digitalWrite(carYellow, HIGH); delay(2000); digitalWrite(carYellow, LOW); digitalWrite(carRed, HIGH); delay(1000); digitalWrite(pedRed, LOW); digitalWrite(pedGreen, HIGH); delay(crossTime);
+for(int x=0;x<10;x++) {
+digitalWrite(pedGreen, HIGH); delay(250);
+digitalWrite(pedGreen, LOW);
+delay(250); }
+digitalWrite(pedRed, HIGH); delay(500); digitalWrite(carYellow, HIGH); digitalWrite(carRed, LOW); delay(1000); digitalWrite(carGreen,HIGH); digitalWrite(carYellow, LOW);
+changeTime=millis(); }
+
